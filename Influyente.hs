@@ -7,6 +7,8 @@ import Data.Bits ( (.|.) )
 import System.Exit (exitWith, ExitCode(..))
 import Data.List
 
+import FontMaker
+
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
 
