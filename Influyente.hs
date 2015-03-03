@@ -35,24 +35,13 @@ resizeScene win w h = do
 drawScene _ = do
   glClear $ fromIntegral $ gl_COLOR_BUFFER_BIT .|. gl_DEPTH_BUFFER_BIT
   glLoadIdentity
-  glTranslatef 0 0 (-1.5)
+  glTranslatef (-1.0675) (-0.625) (-1.5)
   glBegin gl_QUADS
-  glColor3f 0.0 0.5 0.7
-  glVertex3f 0 0 0.0
-  glVertex3f (0 + 0.1) 0 0.0
-  glVertex3f (0 + 0.1) (0 + 0.1) 0.0
-  glVertex3f 0 (0 + 0.1) 0.0
-
-  glColor3f 0.9 0.8 0.0
-  glVertex3f 0.2 (-0.2) 0.0
-  glVertex3f 0.6 (-0.2) 0.0
-  glVertex3f 0.6 0.2 0.0
-  glVertex3f 0.2 0.2 0.0
-
-  glVertex3f 0.6 (-0.2) 0.0
-  glVertex3f 1.0 (-0.2) 0.0
-  glVertex3f 1.0 0.6 0.0
-  glVertex3f 0.6 0.6 0.0
+  glColor3f 0.3 0.3 0.0
+  glVertex3f 0 0 0
+  glVertex3f 0.5 0.0 0.0
+  glVertex3f 0.5 1.5 0.0
+  glVertex3f 0.0 1.5 0.0
   glEnd
 
 shutdown win = do
