@@ -8,6 +8,7 @@ import System.Exit (exitWith, ExitCode(..))
 import Data.List
 
 import FontMaker
+import Core.Hitbox
 
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
@@ -37,11 +38,17 @@ drawScene _ = do
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
   glBegin gl_QUADS
-  glColor3f 0.3 0.3 0.0
+  glColor3f 0.3 0.2 0.0
   glVertex3f 0 0 0
   glVertex3f 0.5 0.0 0.0
   glVertex3f 0.5 1.5 0.0
   glVertex3f 0.0 1.5 0.0
+
+  glColor3f 0.5 0.3 0.0
+  glVertex3f 0.083 0.1 0.0
+  glVertex3f 0.417 0.1 0.0
+  glVertex3f 0.417 0.2 0.0
+  glVertex3f 0.083 0.2 0.0
   glEnd
 
 shutdown win = do

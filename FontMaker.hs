@@ -28,3 +28,4 @@ mksquare sz (x,y) = do
   glVertex3f (x+sz) y 0
   glVertex3f (x+sz) (y+sz) 0
   glVertex3f x (y+sz) 0
+
