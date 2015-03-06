@@ -5,6 +5,7 @@ import Control.Monad.IO.Class (liftIO)
 import Control.Concurrent (threadDelay)
 import Data.Bits ( (.|.) )
 import System.Exit (exitWith, ExitCode(..))
+import Control.Monad
 import Data.List
 
 import FontMaker
@@ -62,7 +63,24 @@ isPressed K.KeyState'Pressed = True
 isPressed K.KeyState'Repeating = True
 isPressed _ = False
 
-getInput :: K.Window -> IO (GLfloat, GLfloat)
+getInput :: K.Window -> Hitbox -> IO ()
+getInput win hb = do
+  (x,y) <- ptnCoords (2.45,1.5) win
+  j <- K.getMouseButton win K.MouseButton'1
+  print (x,y)
+  --print ((realToFrac x::GLfloat),(realToFrac y::GLfloat))
+  when (j == K.MouseButtonState'Pressed && inHB (x,(1.5-y)) hb) (do
+    putStrLn "True"
+    glBegin gl_QUADS
+    glColor3f 0.1 0.0 0.0
+    glVertex3f 0.083 0.1 0.0
+    glVertex3f 0.417 0.1 0.0
+    glVertex3f 0.417 0.2 0.0
+    glVertex3f 0.083 0.2 0.0
+    glEnd)
+
+
+{-getInput :: K.Window -> IO (GLfloat, GLfloat)
 getInput win = do
   x0 <- isPressed `fmap` K.getKey win K.Key'Left
   x1 <- isPressed `fmap` K.getKey win K.Key'Right
@@ -72,12 +90,13 @@ getInput win = do
       x1n = if x1 then 1 else 0
       y0n = if y0 then -1 else 0
       y1n = if y1 then 1 else 0
-  return (x0n + x1n, y0n + y1n)
+  return (x0n + x1n, y0n + y1n)-}
 
-runGame win = runGame' win 0
+runGame win = runGame' win (0::Int)
 runGame' win acc = do
   K.pollEvents
   drawScene win
+  getInput win (Hitbox ((0.083::GLfloat), (0.1::GLfloat)) ((0.417::GLfloat), (0.2::GLfloat)))
   K.swapBuffers win
   runGame' win (1 + acc)
 
