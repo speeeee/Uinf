@@ -15,5 +15,5 @@ ptnCoords :: (Double,Double) -> K.Window -> IO (GLfloat,GLfloat)
 ptnCoords (sx,sy) win = do
   (xc,yc) <- K.getCursorPos win
   (xf,yf) <- K.getFramebufferSize win
-  let (x,y) = ((realToFrac xc)/1280,(realToFrac yc)/752)
+  let (x,y) = ((realToFrac xc)/(realToFrac xf),(realToFrac yc)/(realToFrac yf))
   return (realToFrac (x*sx)::GLfloat,realToFrac (y*sy)::GLfloat)

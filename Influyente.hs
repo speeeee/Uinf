@@ -14,6 +14,11 @@ import Core.Hitbox
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
 
+data Mode = Main | Start | LoadGame | SaveGame | Fonts deriving (Show,Eq)
+
+--mkrect (x,y) (xa,ya) = do
+
+
 initGL win = do
   glShadeModel gl_SMOOTH
   glClearColor 0 0 0 0
@@ -34,7 +39,7 @@ resizeScene win w h = do
   glLoadIdentity
   glFlush
 
-drawScene _ = do
+drawScene mode _ = do
   glClear $ fromIntegral $ gl_COLOR_BUFFER_BIT .|. gl_DEPTH_BUFFER_BIT
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
@@ -42,8 +47,8 @@ drawScene _ = do
   glColor3f 0.3 0.2 0.0
   glVertex3f 0 0 0
   glVertex3f 0.5 0.0 0.0
-  glVertex3f 0.5 1.5 0.0
-  glVertex3f 0.0 1.5 0.0
+  glVertex3f 0.5 1.25 0.0
+  glVertex3f 0.0 1.25 0.0
 
   glColor3f 0.5 0.3 0.0
   glVertex3f 0.083 0.1 0.0
@@ -51,6 +56,14 @@ drawScene _ = do
   glVertex3f 0.417 0.2 0.0
   glVertex3f 0.083 0.2 0.0
   glEnd
+
+  when (mode == Fonts) (do glBegin gl_QUADS
+                           glColor3f 0.1 0.0 0.0
+                           glVertex3f 0.083 0.1 0.0
+                           glVertex3f 0.417 0.1 0.0
+                           glVertex3f 0.417 0.2 0.0
+                           glVertex3f 0.083 0.2 0.0
+                           glEnd)
 
 shutdown win = do
   K.destroyWindow win
@@ -63,21 +76,21 @@ isPressed K.KeyState'Pressed = True
 isPressed K.KeyState'Repeating = True
 isPressed _ = False
 
-getInput :: K.Window -> Hitbox -> IO ()
-getInput win hb = do
-  (x,y) <- ptnCoords (2.45,1.5) win
+getInput :: K.Window -> Hitbox -> Mode -> IO Mode
+getInput win hb mode = do
+  (x,y) <- ptnCoords (2.135,1.25) win
   j <- K.getMouseButton win K.MouseButton'1
-  print (x,y)
   --print ((realToFrac x::GLfloat),(realToFrac y::GLfloat))
-  when (j == K.MouseButtonState'Pressed && inHB (x,(1.5-y)) hb) (do
-    putStrLn "True"
+  if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) hb then return Fonts
+  else return mode
+  {-(do
     glBegin gl_QUADS
     glColor3f 0.1 0.0 0.0
     glVertex3f 0.083 0.1 0.0
     glVertex3f 0.417 0.1 0.0
     glVertex3f 0.417 0.2 0.0
     glVertex3f 0.083 0.2 0.0
-    glEnd)
+    glEnd)-}
 
 
 {-getInput :: K.Window -> IO (GLfloat, GLfloat)
@@ -92,22 +105,22 @@ getInput win = do
       y1n = if y1 then 1 else 0
   return (x0n + x1n, y0n + y1n)-}
 
-runGame win = runGame' win (0::Int)
-runGame' win acc = do
+runGame win mode = runGame' win mode (0::Int)
+runGame' win mode acc = do
   K.pollEvents
-  drawScene win
-  getInput win (Hitbox ((0.083::GLfloat), (0.1::GLfloat)) ((0.417::GLfloat), (0.2::GLfloat)))
+  drawScene mode win
+  nmode <- getInput win (Hitbox ((0.083::GLfloat), (0.1::GLfloat)) ((0.417::GLfloat), (0.2::GLfloat))) mode
   K.swapBuffers win
-  runGame' win (1 + acc)
+  runGame' win nmode (1 + acc)
 
 main = do
   True <- K.init
   Just win <- K.createWindow 1280 800 "Influyente" Nothing Nothing
   --let player = Player2D (0.5,0.4) (0,0) 0 False 0 0
   K.makeContextCurrent (Just win)
-  K.setWindowRefreshCallback win (Just (drawScene))
+  K.setWindowRefreshCallback win (Just (drawScene Main))
   K.setFramebufferSizeCallback win (Just resizeScene)
   K.setWindowCloseCallback win (Just shutdown)
   initGL win
-  runGame win
+  runGame win Main
 
