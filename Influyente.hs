@@ -14,10 +14,18 @@ import Core.Hitbox
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
 
-data Mode = Main | Start | LoadGame | SaveGame | Fonts deriving (Show,Eq)
+data Mode = Main | Start | LoadGame | Fonts deriving (Show,Eq)
+data Menu = Menu { buttons :: [(Int,Int)],
+                   grid :: Grid }
+data Grid = Grid { dim :: (Int,Int),
+                   cellsz :: (GLfloat,GLfloat),
+                   spacing :: GLfloat }
 
---mkrect (x,y) (xa,ya) = do
-
+mkrect (x,y) (xa,ya) = do
+  glVertex3f x y 0
+  glVertex3f xa y 0
+  glVertex3f xa ya 0
+  glVertex3f x ya 0
 
 initGL win = do
   glShadeModel gl_SMOOTH
@@ -44,6 +52,8 @@ drawScene mode _ = do
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
   glBegin gl_QUADS
+  glColor3f 0.2 0.1 0.0
+  mkrect (0,0) (2.135,1.25)
   glColor3f 0.3 0.2 0.0
   glVertex3f 0 0 0
   glVertex3f 0.5 0.0 0.0
@@ -58,11 +68,10 @@ drawScene mode _ = do
   glEnd
 
   when (mode == Fonts) (do glBegin gl_QUADS
-                           glColor3f 0.1 0.0 0.0
-                           glVertex3f 0.083 0.1 0.0
-                           glVertex3f 0.417 0.1 0.0
-                           glVertex3f 0.417 0.2 0.0
-                           glVertex3f 0.083 0.2 0.0
+                           glColor3f 0.15 0.1 0.0
+                           mkrect (0.083,0.1) (0.417,0.2)
+                           glColor3f 0.3 0.2 0.0
+                           mkrect (0.55,0) (2.135,1.25)
                            glEnd)
 
 shutdown win = do
