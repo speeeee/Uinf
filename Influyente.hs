@@ -16,7 +16,7 @@ import Core.Hitbox
 
 data Mode = Main | Start | LoadGame | Fonts deriving (Show,Eq)
 data Menu = Menu { buttons :: [(Int,Int)],
-                   grid :: Grid }
+                   grids :: [Grid] }
 data Grid = Grid { dim :: (Int,Int),
                    cellsz :: (GLfloat,GLfloat),
                    spacing :: GLfloat }
