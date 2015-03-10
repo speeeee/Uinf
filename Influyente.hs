@@ -47,7 +47,7 @@ resizeScene win w h = do
   glLoadIdentity
   glFlush
 
-drawScene mode _ = do
+drawScene e mode _ = do
   glClear $ fromIntegral $ gl_COLOR_BUFFER_BIT .|. gl_DEPTH_BUFFER_BIT
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
@@ -72,6 +72,8 @@ drawScene mode _ = do
                            mkrect (0.083,0.1) (0.417,0.2)
                            glColor3f 0.3 0.2 0.0
                            mkrect (0.55,0) (2.135,1.25)
+                           glColor3f 1 1 1
+                           renderChar (e!!3) (0.3,0.3) 0.05
                            glEnd)
 
 shutdown win = do
@@ -114,22 +116,23 @@ getInput win = do
       y1n = if y1 then 1 else 0
   return (x0n + x1n, y0n + y1n)-}
 
-runGame win mode = runGame' win mode (0::Int)
-runGame' win mode acc = do
+runGame win e mode = runGame' win e mode (0::Int)
+runGame' win e mode acc = do
   K.pollEvents
-  drawScene mode win
+  drawScene e mode win
   nmode <- getInput win (Hitbox ((0.083::GLfloat), (0.1::GLfloat)) ((0.417::GLfloat), (0.2::GLfloat))) mode
   K.swapBuffers win
-  runGame' win nmode (1 + acc)
+  runGame' win e nmode (1 + acc)
 
 main = do
   True <- K.init
   Just win <- K.createWindow 1280 800 "Influyente" Nothing Nothing
+  e <- readFont "alphabet.fnt"
   --let player = Player2D (0.5,0.4) (0,0) 0 False 0 0
   K.makeContextCurrent (Just win)
-  K.setWindowRefreshCallback win (Just (drawScene Main))
+  K.setWindowRefreshCallback win (Just (drawScene e Main))
   K.setFramebufferSizeCallback win (Just resizeScene)
   K.setWindowCloseCallback win (Just shutdown)
   initGL win
-  runGame win Main
+  runGame win e Main
 
