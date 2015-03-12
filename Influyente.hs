@@ -73,13 +73,7 @@ drawScene e mode _ = do
                            glColor3f 0.3 0.2 0.0
                            mkrect (0.55,0) (2.135,1.25)
                            glColor3f 1 1 1
-                           {-renderChar (e!!3) (0.3,0.3) 0.05
-                           renderChar (e!!0) (0.6,0.3) 0.05
-                           renderChar (e!!12) (0.9,0.3) 0.05
-                           renderChar (e!!12) (1.2,0.3) 0.05
-                           renderChar (e!!8) (1.4,0.3) 0.05
-                           renderChar (e!!19) (1.6,0.3) 0.05-}
-                           renderText "dammit" e (0.3,0.3) 0.05
+                           renderText "spain" e (0.3,0.3) 0.05
                            glEnd)
 
 shutdown win = do
