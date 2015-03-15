@@ -81,7 +81,7 @@ fontMake lns char = fontMake (drop 6 lns) (char ++ [(mkchar (take 6 lns))])
 
 mkchar :: [String] -> Character
 mkchar c =
-  Character (chr ((read (head c)::Int)+97))
+  Character (chr (read (head c)::Int))
             (concat (map (\(y,k) -> map (\(x,q) -> if q == 't' then (True,(x,y))
                                                                else (False,(x,y))) (zip [(0::GLfloat)..] k)) (zip [(0::GLfloat)..] (tail c)))) []
 
