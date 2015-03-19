@@ -1,4 +1,4 @@
-module FontMaker (Character(..), Font(..), renderChar, renderText, readFont) where
+module FontMaker (Character(..), renderChar, renderText, readFont) where
 
 import qualified Graphics.UI.GLFW as K
 import Graphics.Rendering.OpenGL.Raw
@@ -7,8 +7,8 @@ import Data.Char
 import Control.Monad
 import System.IO
 
-data Font = Font { name :: String,
-                   chars :: [Character] } deriving (Show,Eq)
+--data Font = Font { name :: String,
+--                   chars :: [Character] } deriving (Show,Eq)
 data Character = Character { key :: Char,
                              char :: [(Bool,(GLfloat,GLfloat))], --5x5
                              diacritic :: [(Bool,(GLfloat,GLfloat))] {-5x3-} } deriving (Show,Eq)

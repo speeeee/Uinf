@@ -15,7 +15,7 @@ import Core.Nations
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
 
-data Mode = Main | Start | LoadGame | Fonts deriving (Show,Eq)
+data Mode = Main | GameBegin | Start | LoadGame | Fonts deriving (Show,Eq)
 data Game = Game { nation :: Region,
                    buttons :: [(GLfloat,GLfloat)] }
 data Grid = Grid { dim :: (Int,Int),
@@ -80,10 +80,21 @@ drawScene e mode nat _ = do
                    mkrect (0.083,1.05) (0.417,1.15)
                    glColor3f 0.3 0.2 0.0
                    mkrect (0.55,0) (2.135,1.25)
+                   glColor3f 1 1 1
+                   mapM_ (\(y,k) -> renderText k e (0.6,y) 0.0045) (zip [1.22,1.175..0] (map name nations))
                    glEnd
        _ -> do glBegin gl_QUADS
                renderText "title screen" e (0.7,1.0) 0.005
                glEnd
+
+drawBoard e nat _ = do
+  glClear $ fromIntegral $ gl_COLOR_BUFFER_BIT .|. gl_DEPTH_BUFFER_BIT
+  glLoadIdentity
+  glTranslatef (-1.0675) (-0.625) (-1.5)
+  glBegin gl_QUADS
+  glColor3f 1 1 1
+  renderText (name nat) e (0.1,0.625) 0.025
+  glEnd
 
 shutdown win = do
   K.destroyWindow win
@@ -96,13 +107,16 @@ isPressed K.KeyState'Pressed = True
 isPressed K.KeyState'Repeating = True
 isPressed _ = False
 
-getInput :: K.Window -> [Hitbox] -> Mode -> Region -> IO Mode
+getInput :: K.Window -> [Hitbox] -> Mode -> Region -> IO (Mode,Region)
 getInput win hb mode nat = do
   (x,y) <- ptnCoords (2.135,1.25) win
+  print (truncate $ y/1.25*27)
   j <- K.getMouseButton win K.MouseButton'1
-  if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!0) then return Fonts
-  else if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!1) then return Start
-  else return mode
+  if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!0) then return (Fonts,nat)
+  else if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!1) then return (Start,nat)
+  else if mode == Start && x >= 0.6 && y <= 1.155 && j == K.MouseButtonState'Pressed
+       then return (GameBegin, nations!!(truncate (y/1.25*27)))
+       else return (mode,nat)
 
 
 {-getInput :: K.Window -> IO (GLfloat, GLfloat)
@@ -117,14 +131,22 @@ getInput win = do
       y1n = if y1 then 1 else 0
   return (x0n + x1n, y0n + y1n)-}
 
+playGame :: K.Window -> [Character] -> Region -> IO ()
+playGame win e nat = playGame' win e nat (0::Int)
+playGame' win e nat acc = do
+  K.pollEvents
+  drawBoard e nat win
+  K.swapBuffers win
+  playGame' win e nat (acc + 1)
+
 runGame win e mode nat = runGame' win e mode nat (0::Int)
 runGame' win e mode nat acc = do
   K.pollEvents
   drawScene e mode nat win
-  nmode <- getInput win [Hitbox ((0.083::GLfloat),0.1) ((0.417::GLfloat),0.2),
-                         Hitbox ((0.083::GLfloat),1.05) ((0.417::GLfloat), 1.15)] mode nat
+  (nmode,nnat) <- getInput win [Hitbox ((0.083::GLfloat),0.1) ((0.417::GLfloat),0.2),
+                                Hitbox ((0.083::GLfloat),1.05) ((0.417::GLfloat), 1.15)] mode nat
   K.swapBuffers win
-  runGame' win e nmode nat (1 + acc)
+  if nmode == GameBegin then playGame win e nnat else runGame' win e nmode nnat (1 + acc)
 
 main = do
   True <- K.init
