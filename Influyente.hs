@@ -110,12 +110,11 @@ isPressed _ = False
 getInput :: K.Window -> [Hitbox] -> Mode -> Region -> IO (Mode,Region)
 getInput win hb mode nat = do
   (x,y) <- ptnCoords (2.135,1.25) win
-  print (truncate $ y/1.25*27)
   j <- K.getMouseButton win K.MouseButton'1
   if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!0) then return (Fonts,nat)
   else if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!1) then return (Start,nat)
   else if mode == Start && x >= 0.6 && y <= 1.155 && j == K.MouseButtonState'Pressed
-       then return (GameBegin, nations!!(truncate (y/1.25*27)))
+       then return (GameBegin, nations!!(truncate (y/1.155*26)))
        else return (mode,nat)
 
 
