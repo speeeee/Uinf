@@ -22,9 +22,9 @@ nations =
    (Region "north america" [(100,(Culture "north american" 0 [] []))] 0 [] []),
    (Region "west africa" [(100,(Culture "west african" 0 [] []))] 0 [] []),
    (Region "north africa" [(100,(Culture "north african" 0 [] []))] 0 [] []),
-   (Region "central african" [(100,(Culture "central african" 0 [] []))] 0 [] []),
-   (Region "east african" [(100,(Culture "east african" 0 [] []))] 0 [] []),
-   (Region "south african" [(100,(Culture "south african" 0 [] []))] 0 [] []),
+   (Region "central africa" [(100,(Culture "central african" 0 [] []))] 0 [] []),
+   (Region "east africa" [(100,(Culture "east african" 0 [] []))] 0 [] []),
+   (Region "south africa" [(100,(Culture "south african" 0 [] []))] 0 [] []),
    (Region "western europe" [(100,(Culture "western european" 0 [] []))] 0 [] []),
    (Region "eastern europe" [(100,(Culture "eastern european" 0 [] []))] 0 [] []),
    (Region "scandinavia" [(100,(Culture "scandinavian" 0 [] []))] 0 [] []),
@@ -38,4 +38,5 @@ nations =
    (Region "india" [(100,(Culture "indian" 0 [] []))] 0 [] []),
    (Region "indochina" [(100,(Culture "indochinese" 0 [] []))] 0 [] []),
    (Region "malaya" [(100,(Culture "malayan" 0 [] []))] 0 [] []),
-   (Region "oceania" [(100,(Culture "oceanian" 0 [] []))] 0 [] [])]
+   (Region "oceania" [(100,(Culture "oceanian" 0 [] []))] 0 [] []),
+   (Region "mongolia" [(100,(Culture "mongolian" 0 [] []))] 0 [] [])]
