@@ -92,8 +92,9 @@ drawBoard e nat _ = do
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
   glBegin gl_QUADS
-  glColor3f 1 1 1
-  renderText (name nat) e (0.1,0.625) 0.025
+  glColor3f 0.8 0.2 0.2
+  mkrect (0,0) (2.135,0.2)
+  mkrect (0.237,0.925) (0.48,0.786)
   glEnd
 
 shutdown win = do
