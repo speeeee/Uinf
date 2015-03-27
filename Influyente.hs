@@ -11,6 +11,7 @@ import Data.List
 import FontMaker
 import Core.Hitbox
 import Core.Nations
+import Util.Map
 
 -- data VertDir = Up | Down
 -- data HoriDir = Left | Right
@@ -87,26 +88,19 @@ drawScene e mode nat _ = do
                renderText "title screen" e (0.7,1.0) 0.005
                glEnd
 
+drawMap m = do
+  let xb = 2.135/32
+      yb = 1.25/24
+  mapM_ (\(y,k) -> mapM_ (\(x,q) -> do if q/=0 then glColor3f 1 1 1 else glColor3f 0 0 0
+                                       mkrect (x*xb,y*yb) ((x+1)*xb,(y+1)*yb)) (zip [0..] k)) (zip [23,22..] m)
+
 drawBoard e nat _ = do
   glClear $ fromIntegral $ gl_COLOR_BUFFER_BIT .|. gl_DEPTH_BUFFER_BIT
   glLoadIdentity
   glTranslatef (-1.0675) (-0.625) (-1.5)
   glBegin gl_QUADS
-  glColor3f 0.8 0.2 0.2
-  mkrect (0,0) (2.135,0.2)
-  mkrect (0.237,0.786) (0.3585,0.925)
-  glColor3f 0.2 0.8 0.2
-  mkrect (0.3585,0.786) (0.48,0.925)
-  glColor3f 1 1 0.8
-  mkrect (0.1185,0.925) (0.55, 1.15)
-  glColor3f 0.5 0.7 0.5
-  mkrect (0.25,0.661) (0.45,0.786)
-  glColor3f 1 0 0
-  mkrect (0.43,0.244) (0.55,0.661)
-  glColor3f 0.7 0.7 1
-  mkrect (0.45,0.661) (0.6,0.786)
-  glColor3f 0 1 0
-  mkrect (0.55,0.35) (0.7,0.62)
+  glColor3f 1 1 1
+  drawMap wmap
   glEnd
 
 shutdown win = do
