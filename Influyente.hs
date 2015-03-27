@@ -94,7 +94,19 @@ drawBoard e nat _ = do
   glBegin gl_QUADS
   glColor3f 0.8 0.2 0.2
   mkrect (0,0) (2.135,0.2)
-  mkrect (0.237,0.925) (0.48,0.786)
+  mkrect (0.237,0.786) (0.3585,0.925)
+  glColor3f 0.2 0.8 0.2
+  mkrect (0.3585,0.786) (0.48,0.925)
+  glColor3f 1 1 0.8
+  mkrect (0.1185,0.925) (0.55, 1.15)
+  glColor3f 0.5 0.7 0.5
+  mkrect (0.25,0.661) (0.45,0.786)
+  glColor3f 1 0 0
+  mkrect (0.43,0.244) (0.55,0.661)
+  glColor3f 0.7 0.7 1
+  mkrect (0.45,0.661) (0.6,0.786)
+  glColor3f 0 1 0
+  mkrect (0.55,0.35) (0.7,0.62)
   glEnd
 
 shutdown win = do
@@ -154,9 +166,9 @@ main = do
   e <- readFont "alphabet.fnt"
   --let player = Player2D (0.5,0.4) (0,0) 0 False 0 0
   K.makeContextCurrent (Just win)
-  K.setWindowRefreshCallback win (Just (drawScene e Main (Region "none" [] 0 [] [])))
+  K.setWindowRefreshCallback win (Just (drawScene e Main (Region "none" [] 0 0 [] [])))
   K.setFramebufferSizeCallback win (Just resizeScene)
   K.setWindowCloseCallback win (Just shutdown)
   initGL win
-  runGame win e Main (Region "none" [] 0 [] [])
+  runGame win e Main (Region "none" [] 0 0 [] [])
 
