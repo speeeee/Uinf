@@ -120,8 +120,8 @@ getInput win hb mode nat = do
   j <- K.getMouseButton win K.MouseButton'1
   if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!0) then return (Fonts,nat)
   else if j == K.MouseButtonState'Pressed && inHB (x,(1.25-y)) (hb!!1) then return (Start,nat)
-  else if mode == Start && x >= 0.6 && y <= 1.2025 && j == K.MouseButtonState'Pressed
-       then return (GameBegin, nations!!(truncate (y/1.2025*27)))
+  else if mode == Start && x >= 0.6 && y <= 0.855 && j == K.MouseButtonState'Pressed
+       then return (GameBegin, nations!!(truncate (y/0.855*19)))
        else return (mode,nat)
 
 
