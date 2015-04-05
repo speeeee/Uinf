@@ -30,6 +30,6 @@ nations =
    (Region "caucasus" [(100,(Culture "caucasian" 0 [] []))] 24 0 [] []),               --14
    (Region "west eurasia" [(100,(Culture "west eurasian" 0 [] []))] 16 0 [] []),       --15
    (Region "siberia" [(100,(Culture "siberian" 0 [] []))] 25 0 [] []),                 --16
-   (Region "eastern asia" [(100,(Culture "eastern asia" 0 [] []))] 2 0 [] []),         --17
+   (Region "eastern asia" [(100,(Culture "eastern asian" 0 [] []))] 2 0 [] []),        --17
    (Region "central asia" [(100,(Culture "central asian" 0 [] []))] 1 0 [] []),        --18
    (Region "oceania" [(100,(Culture "oceanian" 0 [] []))] 17 0 [] [])]                 --19
