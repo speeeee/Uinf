@@ -91,7 +91,7 @@ drawScene e mode nat _ = do
 drawMap m = do
   let xb = 2.135/32
       yb = 1.25/24
-  mapM_ (\(y,k) -> mapM_ (\(x,q) -> do if q/=0 then glColor3f 1 1 1 else glColor3f 0 0 0
+  mapM_ (\(y,k) -> mapM_ (\(x,q) -> do if q/=0 then let (r,g,b) = color (snd ((distro (nations!!(q-1)))!!0)) in glColor3f r g b else glColor3f 0 0 0.2
                                        mkrect (x*xb,y*yb) ((x+1)*xb,(y+1)*yb)) (zip [0..] k)) (zip [23,22..] m)
 
 drawBoard e nat _ = do
